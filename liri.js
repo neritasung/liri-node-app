@@ -99,7 +99,7 @@ function song(songName) {
 
         // Handling error
         if (err) {
-          console.log('Error occurred: ' + err);
+          console.log("Error");
           return;
         }
       };
@@ -151,7 +151,7 @@ function song(songName) {
           doWhatItSaysResults = data.split(",");
           song(doWhatItSaysResults[0], doWhatItSaysResults[1]);
         } else {
-          console.log("Error occurred" + error);
+          console.log("Error");
         }
       });
     };
