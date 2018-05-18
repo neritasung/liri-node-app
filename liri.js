@@ -1,21 +1,18 @@
 // Rrquire dotenv package
-require("dotenv").config();
+require('dotenv').config();
 
 // Environment variable for Spotify
 var sID = process.env.SPOTIFY_ID;
 var sSecret = process.env.SPOTIFY_SECRET;
 
 // Environment variable for Twitter
-var Twitter = require('twitter');
+var twitter = require('twitter');
 
 // Import keys.js file
 var keys = require("./keys.js");
 
-// Import the Twitter NPM package.
-var Twitter = require("twitter");
-
 // Import the node-spotify-api NPM package.
-var Spotify = require("node-spotify-api");
+var spotify = require("node-spotify-api");
 
 // Import the request npm package.
 var request = require("request");
@@ -43,12 +40,12 @@ switch (liriArgs) {
   case "do-what-it-says":
     random();
     break;
-}
+};
 // ---------------------------Function for my-tweets---------------------
 // check for user's command
 // to write the function, will have to insert everyting within the curly braces into the funciton
 function tweets() {
-  var client = new Twitter({
+  var client = new twitter({
     consumer_key: process.env.TWITTER_CONSUMER_KEY,
     consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
     access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
@@ -57,7 +54,8 @@ function tweets() {
   // Grab user input/ command
   var args = process.argv.slice(2);
   var params = { screen_name: 'nodejs' };
-  twitter.get('search/tweet', { q: 'mooncakecamp' }, function (error, tweets, response) {
+  client.get('search/tweet', { q: 'Mooncakecamp' }, function (error, tweets, response) {
+   console.log (error);
     if (!error) {
 
       // for loop to display tweets
@@ -104,7 +102,8 @@ function song(songName) {
         }
       };
     }
-
+  });
+};
     //  ----------------- Function for OMDB --------------------
     // function for OMDB call "movie"
     // Include the request npm package
@@ -116,7 +115,7 @@ function song(songName) {
         movieName = "Mr. Nobody"
       }
       // Request to the OMDB API 
-      param = movieName
+      param = movieName;
 
       request("http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy", function (error, response, body) {
 
@@ -150,7 +149,8 @@ function song(songName) {
         if (!error) {
           doWhatItSaysResults = data.split(",");
           song(doWhatItSaysResults[0], doWhatItSaysResults[1]);
-        } else {
+        } 
+        else {
           console.log("Error");
         }
       });
