@@ -75,7 +75,7 @@ function tweets() {
 
 function song(songName) {
   var songName = process.argv[3];
-  
+
   // if no song name default to The Sign
   if (!songName) {
     songName = "The Sign";
@@ -88,12 +88,12 @@ function song(songName) {
       var songInfo = data.tracks.items;
       for (var i = 0; i < 5; i++) {
         if (songInfo[i] != undefined) {
-          
+
           // Print spotify results
           var spotifyResults =
             "Artist: " + songInfo[i].artists[0].name +
             "\nSong: " + songInfo[i].name +
-            "\nAlbum the song is from: " + songInfo[i].album.name
+            "\nAlbum Name: " + songInfo[i].album.name
         };
         console.log(spotifyResults);
 
@@ -109,17 +109,49 @@ function song(songName) {
     // function for OMDB call "movie"
     // Include the request npm package
     function movie() {
-      var request = require("request");
+      var movieName = process.argv[3];
 
-      // Then run a request to the OMDB API with the movie specified
-      request("http://www.omdbapi.com/?t=remember+the+titans&y=&plot=short&apikey=trilogy", function (error, response, body) {
+      // If no movie title provided default to Mr. Nobody
+      if (!movieName) {
+        movieName = "Mr. Nobody"
+      }
+      // Request to the OMDB API 
+      param = movieName
+
+      request("http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy", function (error, response, body) {
 
         // If the request is successful (i.e. if the response status code is 200)
         if (!error && response.statusCode === 200) {
 
-          // Parse the body of the site and recover just the imdbRating
-          // (Note: The syntax below for parsing isn't obvious. Just spend a few moments dissecting it).
-          console.log("The movie's rating is: " + JSON.parse(body).imdbRating);
+          // parse the movie object from API call
+          var movieObject = JSON.parse(body);
+
+          // Print results
+          var movieInfo =
+            "Title: " + movieObject.Title +
+            "\nYear: " + movieObject.Year +
+            "\nIMDB Rating: " + movieObject.imdbRating +
+            "\nRotten Tomatoes Rating: " + movieObject.tomatoRating +
+            "\nProduced by (Country): " + movieObject.Country +
+            "\nLanguage: " + movieObject.Language +
+            "\nPlot: " + movieObject.Plot +
+            "\nActors: " + movieObject.Actors
+          console.log(movieInfo);
+        }
+        else {
+          console.log("Error");
         }
       });
-    }
+    };
+
+    // Random Function
+    function random() {
+      fs.readFile("random.txt", "utf8", function (error, data) {
+        if (!error) {
+          doWhatItSaysResults = data.split(",");
+          song(doWhatItSaysResults[0], doWhatItSaysResults[1]);
+        } else {
+          console.log("Error occurred" + error);
+        }
+      });
+    };
