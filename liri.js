@@ -146,7 +146,7 @@ function song(songName) {
 
     // Random Function
     function random() {
-      fs.readFile("random.txt", "utf8", function (error, data) {
+      fs.readFile("./random.txt", "utf8", function (error, data) {
         if (!error) {
           doWhatItSaysResults = data.split(",");
           song(doWhatItSaysResults[0], doWhatItSaysResults[1]);
@@ -154,4 +154,4 @@ function song(songName) {
           console.log("Error");
         }
       });
-    };
+  };
