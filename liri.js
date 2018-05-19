@@ -1,10 +1,6 @@
 // Rrquire dotenv package
 require('dotenv').config();
 
-// Environment variable for Spotify
-var sID = process.env.SPOTIFY_ID;
-var sSecret = process.env.SPOTIFY_SECRET;
-
 // Environment variable for Twitter
 var twitter = require('twitter');
 
@@ -12,7 +8,7 @@ var twitter = require('twitter');
 var keys = require("./keys.js");
 
 // Import the node-spotify-api NPM package.
-var spotify = require("node-spotify-api");
+var Spotify = require("node-spotify-api");
 
 // Import the request npm package.
 var request = require("request");
@@ -60,12 +56,12 @@ function tweets() {
   client.get("statuses/user_timeline", params, function (error, data, response) {
     if (!error) {
       // for loop to display tweets
-      for (var i = 0; i < data.length; i++){
-        var tweets = 
-					"@" + data[i].user.screen_name + ": " + 
-					data[i].text + "\n"+
-					data[i].created_at + "\n" + 
-					console.log(tweets);
+      for (var i = 0; i < data.length; i++) {
+        var tweets =
+          "@" + data[i].user.screen_name + ": " +
+          data[i].text + "\n" +
+          data[i].created_at + "\n" +
+          console.log(tweets);
       }
     }
     else {
@@ -84,9 +80,14 @@ function song(songName) {
   if (!songName) {
     songName = "The Sign";
   }
-
-  // grab user input
+  // Environment variable for Spotify
   params = songName;
+  var spotify = new Spotify({
+    id: process.env.SPOTIFY_ID,
+    secret: process.env.SPOTIFY_SECRET,
+  });
+  
+  // grab user input
   spotify.search({ type: 'track', query: params }, function (err, data) {
     if (!err) {
       var songInfo = data.tracks.items;
