@@ -61,7 +61,10 @@ function tweets() {
           "@" + data[i].user.screen_name + ": " +
           data[i].text + "\n" +
           data[i].created_at + "\n" +
-          console.log(tweets);
+          "\n ----------------------------------"
+        console.log(tweets);
+        // append results in log.txt
+        fs.appendFile("log.txt", tweets);
       }
     }
     else {
@@ -86,7 +89,7 @@ function song(songName) {
     id: process.env.SPOTIFY_ID,
     secret: process.env.SPOTIFY_SECRET,
   });
-  
+
   // grab user input
   spotify.search({ type: 'track', query: params }, function (err, data) {
     if (!err) {
@@ -98,9 +101,12 @@ function song(songName) {
           var spotifyResults =
             "Artist: " + songInfo[i].artists[0].name +
             "\nSong: " + songInfo[i].name +
-            "\nAlbum Name: " + songInfo[i].album.name
+            "\nAlbum Name: " + songInfo[i].album.name +
+            "\n ----------------------------------"
         };
         console.log(spotifyResults);
+        // append results in log.txt
+        fs.appendFile("log.txt", spotifyResults);
 
         // Handling error
         if (err) {
@@ -141,8 +147,11 @@ function movie() {
         "\nProduced by (Country): " + movieObject.Country +
         "\nLanguage: " + movieObject.Language +
         "\nPlot: " + movieObject.Plot +
-        "\nActors: " + movieObject.Actors
+        "\nActors: " + movieObject.Actors +
+        "\n ----------------------------------"
       console.log(movieInfo);
+      // append results in log.txt
+      fs.appendFile("log.txt", movieInfo);
     }
     else {
       console.log("Error");
@@ -156,6 +165,8 @@ function random() {
     if (!error) {
       doWhatItSaysResults = data.split(",");
       song(doWhatItSaysResults[0], doWhatItSaysResults[1]);
+      // append results in log.txt
+      fs.appendFile("log.txt", doWhatItSaysResults);
     }
     else {
       console.log("Error");
