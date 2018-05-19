@@ -52,15 +52,21 @@ function tweets() {
     access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
   });
   // Grab user input/ command
-  var args = process.argv.slice(2);
-  var params = { screen_name: 'nodejs' };
-  client.get('search/tweet', { q: 'Mooncakecamp' }, function (error, tweets, response) {
-   console.log (error);
+  var username = process.argv[3];
+  if (!username) {
+    username = "Mooncakecamp";
+  }
+  params = { screen_name: username };
+  client.get("statuses/user_timeline", params, function (error, data, response) {
     if (!error) {
-
       // for loop to display tweets
-      for (var i = 0; i < tweets.statuses.length; i++);
-      console.log(tweets);
+      for (var i = 0; i < data.length; i++){
+        var tweets = 
+					"@" + data[i].user.screen_name + ": " + 
+					data[i].text + "\n"+
+					data[i].created_at + "\n" + 
+					console.log(tweets);
+      }
     }
     else {
       console.log("Error");
@@ -104,54 +110,54 @@ function song(songName) {
     }
   });
 };
-    //  ----------------- Function for OMDB --------------------
-    // function for OMDB call "movie"
-    // Include the request npm package
-    function movie() {
-      var movieName = process.argv[3];
+//  ----------------- Function for OMDB --------------------
+// function for OMDB call "movie"
+// Include the request npm package
+function movie() {
+  var movieName = process.argv[3];
 
-      // If no movie title provided default to Mr. Nobody
-      if (!movieName) {
-        movieName = "Mr. Nobody"
-      }
-      // Request to the OMDB API 
-      param = movieName;
+  // If no movie title provided default to Mr. Nobody
+  if (!movieName) {
+    movieName = "Mr. Nobody"
+  }
+  // Request to the OMDB API 
+  param = movieName;
 
-      request("http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy", function (error, response, body) {
+  request("http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy", function (error, response, body) {
 
-        // If the request is successful (i.e. if the response status code is 200)
-        if (!error && response.statusCode === 200) {
+    // If the request is successful (i.e. if the response status code is 200)
+    if (!error && response.statusCode === 200) {
 
-          // parse the movie object from API call
-          var movieObject = JSON.parse(body);
+      // parse the movie object from API call
+      var movieObject = JSON.parse(body);
 
-          // Print results
-          var movieInfo =
-            "Title: " + movieObject.Title +
-            "\nYear: " + movieObject.Year +
-            "\nIMDB Rating: " + movieObject.imdbRating +
-            "\nRotten Tomatoes Rating: " + movieObject.tomatoRating +
-            "\nProduced by (Country): " + movieObject.Country +
-            "\nLanguage: " + movieObject.Language +
-            "\nPlot: " + movieObject.Plot +
-            "\nActors: " + movieObject.Actors
-          console.log(movieInfo);
-        }
-        else {
-          console.log("Error");
-        }
-      });
-    };
+      // Print results
+      var movieInfo =
+        "Title: " + movieObject.Title +
+        "\nYear: " + movieObject.Year +
+        "\nIMDB Rating: " + movieObject.imdbRating +
+        "\nRotten Tomatoes Rating: " + movieObject.tomatoRating +
+        "\nProduced by (Country): " + movieObject.Country +
+        "\nLanguage: " + movieObject.Language +
+        "\nPlot: " + movieObject.Plot +
+        "\nActors: " + movieObject.Actors
+      console.log(movieInfo);
+    }
+    else {
+      console.log("Error");
+    }
+  });
+};
 
-    // Random Function
-    function random() {
-      fs.readFile("./random.txt", "utf8", function (error, data) {
-        if (!error) {
-          doWhatItSaysResults = data.split(",");
-          song(doWhatItSaysResults[0], doWhatItSaysResults[1]);
-        } 
-        else {
-          console.log("Error");
-        }
-      });
-  };
+// Random Function
+function random() {
+  fs.readFile("./random.txt", "utf8", function (error, data) {
+    if (!error) {
+      doWhatItSaysResults = data.split(",");
+      song(doWhatItSaysResults[0], doWhatItSaysResults[1]);
+    }
+    else {
+      console.log("Error");
+    }
+  });
+};
